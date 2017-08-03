@@ -15,16 +15,19 @@ export class HomePage {
   lastname: string;
   errormessage: string;
   resp: any;
+  usernameLength: number;
+  passwordLength: number;
+  firstLoadUsername: boolean;
+  firstLoadPassword: boolean;
   constructor(public navCtrl: NavController, private HomeService: HomeService) {
-
+     this.usernameLength = 0;
+     this.passwordLength = 0;
+     this.firstLoadUsername = true;
+     this.firstLoadPassword = true;
   }
-
-
+ 
   async credentialForm() {
      try {
-      this.password = this.password.replace('`','');
-      this.password = this.password.replace('\'','');
-      
       const Response = await this.HomeService.getData(this.username, this.password);
       this.res = Response.json();
       this.resp = this.res;
@@ -45,6 +48,30 @@ export class HomePage {
 
     } catch (ex) {
       console.error(`AppComponent::get:: errored with: ${ex}`);
+    }
+  }
+ 
+   isInvalid() {
+      if ( this.usernameLength < 6 || this.passwordLength < 6) {
+        console.log("valid test");
+        return true;
+      } else 
+      { return false }
+  }
+ 
+  userLength() {
+    this.errormessage = '';
+    this.firstLoadUsername = false;
+    if (this.username != '') {
+      this.usernameLength = this.username.length;
+    } 
+  }
+
+   passLength() {
+    this.errormessage = '';
+    this.firstLoadPassword = false;
+    if (this.password != '') {
+      this.passwordLength = this.password.length;
     }
   }
 

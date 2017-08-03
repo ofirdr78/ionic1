@@ -11,16 +11,25 @@
   <form (ngSubmit)="credentialForm()" class="form">
   <ion-item>
     <ion-label color="primary">Username</ion-label>
-    <ion-input class="inputField" required placeholder="Please enter username" [(ngModel)]="username" name="username"></ion-input>
+    <ion-input required minlength="6" maxlength="24" class="inputField" required placeholder="Please enter username"
+     [(ngModel)]="username" name="username" (input)="userLength()"></ion-input>
   </ion-item>
   
+  <div *ngIf="usernameLength < 6 && !firstLoadUsername" class="error">
+     Username is too short
+    </div>
+
     <ion-item>
     <ion-label color="primary">Password</ion-label>
-    <ion-input class="inputField" required minlength="3" maxlength="24" type="password" placeholder="Please enter assword" [(ngModel)]="password" name="password"></ion-input>
+    <ion-input class="inputField" required minlength="6" maxlength="24" type="password" placeholder="Please enter password" 
+    [(ngModel)]="password" name="password" (input)="passLength()"></ion-input>
   </ion-item>
  
+  <div *ngIf="passwordLength < 6 && !firstLoadPassword" class="error">
+     Password is too short
+    </div>
 
- <button ion-button block type="submit">Enter</button>
+ <button ion-button block type="submit" [disabled]="isInvalid()">Enter</button>
    </form>
 <p class="logged">
 {{ firstname }} {{ lastname }}
