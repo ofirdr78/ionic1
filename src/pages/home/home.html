@@ -1,17 +1,31 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title>YouLike App</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+<ion-content padding class="pane">
+  <h2>Welcome to YouLike App!
+  <button ion-button round type="register" class="register" align="right">Register</button></h2>
+   <!--<br><br><br><br><br><br><br><br><br>-->
+  <form (ngSubmit)="credentialForm()" class="form">
+  <ion-item>
+    <ion-label color="primary">Username</ion-label>
+    <ion-input class="inputField" required placeholder="Please enter username" [(ngModel)]="username" name="username"></ion-input>
+  </ion-item>
+  
+    <ion-item>
+    <ion-label color="primary">Password</ion-label>
+    <ion-input class="inputField" required minlength="3" maxlength="24" type="password" placeholder="Please enter assword" [(ngModel)]="password" name="password"></ion-input>
+  </ion-item>
+ 
+
+ <button ion-button block type="submit">Enter</button>
+   </form>
+<p class="logged">
+{{ firstname }} {{ lastname }}
+<p>
+<p class="error">
+{{ errormessage }}
+</p>
 </ion-content>

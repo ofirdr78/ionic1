@@ -1,3 +1,38 @@
-page-home {
+.error {    
+    color: red;
+    text-align: center;
+    font-size: 25px;
+    text-shadow: 3px 3px 3px black;
+    position: relative;
+    top: 30%;
+}
 
+ .pane {
+        background: url('../assets/photo.jpeg') no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover;
+     
+    }
+
+.register {
+    color: white;
+    background-color: red;
+    position: absolute;
+    right: 10px;
+    width: 100px;
+    padding: 10px;
+}
+
+.form {
+     position: relative;
+     top: 30%;
+}
+
+.logged {    
+    text-align: center;
+    font-size: 25px;
+    text-shadow: 3px 3px 3px black;
+    position: relative;
+    top: 30%;
 }
