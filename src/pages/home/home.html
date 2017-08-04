@@ -6,8 +6,9 @@
 
 <ion-content padding class="pane">
   <h2>Welcome to YouLike App!
-  <button ion-button round type="register" class="register" align="right">Register</button></h2>
-   <!--<br><br><br><br><br><br><br><br><br>-->
+
+  <button ion-button round type="register" class="register" align="right" (click)="pushPage()" >Register</button></h2>
+   <br><br> <br><br>  <br><br>  <br><br>
   <form (ngSubmit)="credentialForm()" class="form">
   <ion-item>
     <ion-label color="primary">Username</ion-label>
@@ -18,7 +19,7 @@
   <div *ngIf="usernameLength < 6 && !firstLoadUsername" class="error">
      Username is too short
     </div>
-
+ 
     <ion-item>
     <ion-label color="primary">Password</ion-label>
     <ion-input class="inputField" required minlength="6" maxlength="24" type="password" placeholder="Please enter password" 
