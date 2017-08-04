@@ -56,29 +56,44 @@
 
     <ion-item>
     <ion-label color="primary" stacked>First Name</ion-label>
-    <ion-input class="inputField" required maxlength="24" type="text" placeholder="Please enter your first name" 
-    [(ngModel)]="firstName" name="firstName" ></ion-input>
+    <ion-input class="inputField" required minlength="3" maxlength="24" type="text" placeholder="Please enter your first name" 
+    [(ngModel)]="firstName" name="firstName" (input)="firstNameLengthCheck()"></ion-input>
   </ion-item>
  
+  <div *ngIf="firstNameLength < 6 && !firstLoadFirstName" class="error">
+     First name is too short
+    </div>
 
     <ion-item>
     <ion-label color="primary" stacked>Last Name</ion-label>
-    <ion-input class="inputField" required maxlength="24" type="text" placeholder="Please enter your last name" 
-    [(ngModel)]="lastName" name="lastName" ></ion-input>
+    <ion-input class="inputField" required minlength="3" maxlength="24" type="text" placeholder="Please enter your last name" 
+    [(ngModel)]="lastName" name="lastName" (input)="lastNameLengthCheck()"></ion-input>
   </ion-item>
+
+  <div *ngIf="lastNameLength < 6 && !firstLoadLastName" class="error">
+     Last name is too short
+    </div>
 
   <ion-item>
     <ion-label color="primary" stacked>City</ion-label>
-    <ion-input class="inputField" required minlength="6" maxlength="24" type="text" placeholder="Please enter city" 
-    [(ngModel)]="city" name="city" ></ion-input>
+    <ion-input class="inputField" required minlength="3" maxlength="24" type="text" placeholder="Please enter city" 
+    [(ngModel)]="city" name="city" (input)="cityLengthCheck()" ></ion-input>
   </ion-item>
  
+  <div *ngIf="cityLength < 3 && !firstLoadCity" class="error">
+     City is too short
+    </div>
+
       <ion-item>
     <ion-label color="primary" stacked>Country</ion-label>
-    <ion-input class="inputField" required minlength="6" maxlength="24" type="text" placeholder="Please enter country" 
-    [(ngModel)]="country" name="country" ></ion-input>
+    <ion-input class="inputField" required minlength="3" maxlength="24" type="text" placeholder="Please enter country" 
+    [(ngModel)]="country" name="country" (input)="countryLengthCheck()" ></ion-input>
   </ion-item>
  
+ <div *ngIf="countryLength < 3 && !firstLoadCountry" class="error">
+     Country is too short
+    </div>
+
  <button ion-button block type="submit" [disabled]="isInvalid()">Submit</button>
    </form>
 

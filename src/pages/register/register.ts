@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { RegisterService } from './register.service';
+import { HomePage } from '../home/home';
 
 @Component({
   selector: 'page-register',
   templateUrl: 'register.html'
 })
 export class RegisterPage {
+  HomePage: HomePage;
   username: string;
   password: string;
   firstName: string;
@@ -20,27 +22,44 @@ export class RegisterPage {
   usernameLength: number;
   passwordLength: number;
   passwordRepLength: number;
+  firstNameLength: number;
+  lastNameLength: number;
+  cityLength: number;
+  countryLength: number;
   firstLoadUsername: boolean;
   firstLoadPassword: boolean;
   firstLoadPasswordRep: boolean;
   firstLoadBirthdate: boolean;
+  firstLoadFirstName: boolean;
+  firstLoadLastName: boolean;
+  firstLoadCity: boolean;
+  firstLoadCountry: boolean;
   res: any;
   usernameAlreadyExists: boolean;
   repPassIsDifferent: boolean;
   validDate: boolean;
   constructor(public navCtrl: NavController, private RegisterService: RegisterService) {
-         this.usernameLength = 0;
-         this.passwordLength = 0;
-         this.passwordRepLength = 0;
-          this.firstLoadUsername = true;
-          this.firstLoadPassword = true;
-          this.firstLoadBirthdate = true;
-          this.today = new Date();
+            this.usernameLength = 0;
+            this.passwordLength = 0;
+            this.passwordRepLength = 0;
+            this.firstNameLength = 0;
+            this.lastNameLength = 0;
+            this.cityLength = 0;
+            this.countryLength = 0;
+            this.firstLoadUsername = true;
+            this.firstLoadPassword = true;
+            this.firstLoadBirthdate = true;
+            this.firstLoadFirstName = true;
+            this.firstLoadLastName = true;
+            this.firstLoadCity = true;
+            this.firstLoadCountry = true;
+            this.today = new Date();
   }
  
  isInvalid() {
       if ( this.usernameLength < 6 || this.usernameAlreadyExists || this.passwordLength < 6 || this.passwordRepLength < 6 
-      || this.repPassIsDifferent || !this.validDate ) {
+           || this.repPassIsDifferent || !this.validDate || this.firstNameLength < 3 || this.lastNameLength < 3 
+           || this.cityLength < 3 || this.countryLength < 3 ) {
         return true;
       } else 
       { return false }
@@ -78,7 +97,6 @@ export class RegisterPage {
 
   birthdateCheck() {
     this.firstLoadBirthdate = false;
-    console.log(this.birthdate);
     this.parsedToday = ('0' + (this.today.getMonth()+1)).slice(-2) + '-' + ('0' + this.today.getDate()).slice(-2);
     this.parsedToday = this.today.getFullYear() + '-' + this.parsedToday;                  
     if (this.parsedToday > this.birthdate) {
@@ -87,6 +105,34 @@ export class RegisterPage {
       this.validDate = false;
     }
  }
+
+  firstNameLengthCheck() {
+    this.firstLoadFirstName = false;
+    if (this.firstName != '') {
+      this.firstNameLength = this.firstName.length;
+    } 
+  }
+
+  lastNameLengthCheck() {
+    this.firstLoadLastName = false;
+    if (this.lastName != '') {
+      this.lastNameLength = this.lastName.length;
+    } 
+  }
+
+ cityLengthCheck() {
+    this.firstLoadCity = false;
+    if (this.city != '') {
+      this.cityLength = this.city.length;
+    } 
+  }
+
+  countryLengthCheck() {
+    this.firstLoadCountry = false;
+    if (this.country != '') {
+      this.countryLength = this.country.length;
+    } 
+  }
 
  async checkIfUserExistsOnDB() {
      try {
@@ -107,8 +153,10 @@ export class RegisterPage {
 
 async addUser() {
    try {
-      const Response = await this.RegisterService.addUser(this.username);
+      const Response = await this.RegisterService.addUser(this.username, this.password, this.birthdate, this.firstName, 
+      this.lastName, this.city, this.country);
       this.res = Response.json();
+      this.navCtrl.push(HomePage);
       // console.log(`AppComponent::get:: got response: ${Response}`);
     } catch (ex) {
       console.error(`AppComponent::get:: errored with: ${ex}`);
