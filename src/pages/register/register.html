@@ -14,8 +14,8 @@
      [(ngModel)]="username" name="username" (input)="userLength()"></ion-input>
   </ion-item>
   
-  <div *ngIf="usernameLength < 6 && !firstLoadUsername" class="error">
-     Username is too short
+  <div class="error">
+     {{ usernameErrorMessage }}
     </div>
 
  <div *ngIf="usernameAlreadyExists" class="error">
@@ -29,8 +29,8 @@
     [(ngModel)]="password" name="password" (input)="passLength()"></ion-input>
   </ion-item>
  
-  <div *ngIf="passwordLength < 6 && !firstLoadPassword" class="error">
-     Password is too short
+  <div class="error">
+      {{ passwordErrorMessage }}
     </div>
 
     <ion-item>
@@ -60,8 +60,8 @@
     [(ngModel)]="firstName" name="firstName" (input)="firstNameLengthCheck()"></ion-input>
   </ion-item>
  
-  <div *ngIf="firstNameLength < 3 && !firstLoadFirstName" class="error">
-     First name is too short
+  <div class="error">
+       {{ firstnameErrorMessage }}
     </div>
 
     <ion-item>
@@ -70,8 +70,8 @@
     [(ngModel)]="lastName" name="lastName" (input)="lastNameLengthCheck()"></ion-input>
   </ion-item>
 
-  <div *ngIf="lastNameLength < 3 && !firstLoadLastName" class="error">
-     Last name is too short
+   <div class="error">
+       {{ lastnameErrorMessage }}
     </div>
 
   <ion-item>
@@ -84,15 +84,12 @@
      City is too short
     </div>
 
-      <ion-item>
-    <ion-label color="primary" stacked>Country</ion-label>
-    <ion-input class="inputField" required minlength="3" maxlength="24" type="text" placeholder="Please enter country" 
-    [(ngModel)]="country" name="country" (input)="countryLengthCheck()" ></ion-input>
-  </ion-item>
- 
- <div *ngIf="countryLength < 3 && !firstLoadCountry" class="error">
-     Country is too short
-    </div>
+  <ion-item>
+  <ion-label color="primary" stacked>Country</ion-label>
+  <ion-select [(ngModel)]="country" name="country" required>
+    <ion-option value="israel" >Israel</ion-option>
+  </ion-select>
+</ion-item> 
 
  <button ion-button block type="submit" [disabled]="isInvalid()">Submit</button>
    </form>

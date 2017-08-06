@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { RegisterService } from './register.service';
 import { HomePage } from '../home/home';
 
+
 @Component({
   selector: 'page-register',
   templateUrl: 'register.html'
@@ -25,7 +26,6 @@ export class RegisterPage {
   firstNameLength: number;
   lastNameLength: number;
   cityLength: number;
-  countryLength: number;
   firstLoadUsername: boolean;
   firstLoadPassword: boolean;
   firstLoadPasswordRep: boolean;
@@ -33,11 +33,16 @@ export class RegisterPage {
   firstLoadFirstName: boolean;
   firstLoadLastName: boolean;
   firstLoadCity: boolean;
-  firstLoadCountry: boolean;
   res: any;
   usernameAlreadyExists: boolean;
   repPassIsDifferent: boolean;
   validDate: boolean;
+  regEx = new RegExp(/^[0-9a-zA-Z ]+$/);
+  usernameErrorMessage: string;
+  passwordErrorMessage: string;
+  firstnameErrorMessage: string;
+  lastnameErrorMessage: string;
+
   constructor(public navCtrl: NavController, private RegisterService: RegisterService) {
             this.usernameLength = 0;
             this.passwordLength = 0;
@@ -45,21 +50,24 @@ export class RegisterPage {
             this.firstNameLength = 0;
             this.lastNameLength = 0;
             this.cityLength = 0;
-            this.countryLength = 0;
             this.firstLoadUsername = true;
             this.firstLoadPassword = true;
             this.firstLoadBirthdate = true;
             this.firstLoadFirstName = true;
             this.firstLoadLastName = true;
             this.firstLoadCity = true;
-            this.firstLoadCountry = true;
             this.today = new Date();
+            this.usernameErrorMessage = '';
+            this.passwordErrorMessage = '';
+            this.firstnameErrorMessage = '';
+            this.lastnameErrorMessage = '';
+  
   }
  
  isInvalid() {
       if ( this.usernameLength < 6 || this.usernameAlreadyExists || this.passwordLength < 6 || this.passwordRepLength < 6 
            || this.repPassIsDifferent || !this.validDate || this.firstNameLength < 3 || this.lastNameLength < 3 
-           || this.cityLength < 3 || this.countryLength < 3 ) {
+           || this.cityLength < 3 || this.country == null ) {
         return true;
       } else 
       { return false }
@@ -67,20 +75,28 @@ export class RegisterPage {
  
   userLength() {
     this.usernameAlreadyExists = false;
+    this.usernameErrorMessage = this.isValidText(this.username);
+    if (this.usernameErrorMessage == '') {
     this.firstLoadUsername = false;
     if (this.username != '') {
       this.usernameLength = this.username.length;
       if (this.usernameLength >= 6) {
         this.checkIfUserExistsOnDB();
-      }
-    } 
+      } else { this.usernameErrorMessage = 'Username is too short'; }
+    }
+   }
   }
  
   passLength() {
     this.firstLoadPassword = false;
+     this.passwordErrorMessage = this.isValidText(this.password);
+    if (this.passwordErrorMessage == '') {
     if (this.password != '') {
-      this.passwordLength = this.password.length;
-    } 
+      this.passwordLength = this.password.length; 
+    if (this.passwordLength < 6) {
+      this.passwordErrorMessage = 'Password is too short'; }
+      } 
+    }  
   }
 
    passRepLength() {
@@ -108,15 +124,25 @@ export class RegisterPage {
 
   firstNameLengthCheck() {
     this.firstLoadFirstName = false;
+    this.firstnameErrorMessage = this.isValidText(this.firstName);
+    if (this.firstnameErrorMessage == '') {
+     if (this.firstNameLength < 3) {
+       this.firstnameErrorMessage = 'First name is too short'};
     if (this.firstName != '') {
-      this.firstNameLength = this.firstName.length;
+      this.firstNameLength = this.firstName.length; 
+     } else { this.firstnameErrorMessage = ''}
     } 
   }
 
-  lastNameLengthCheck() {
+   lastNameLengthCheck() {
     this.firstLoadLastName = false;
+    this.lastnameErrorMessage = this.isValidText(this.lastName);
+    if (this.lastnameErrorMessage == '') {
+     if (this.lastNameLength < 3) {
+       this.lastnameErrorMessage = 'Last name is too short'};
     if (this.lastName != '') {
-      this.lastNameLength = this.lastName.length;
+      this.lastNameLength = this.lastName.length; 
+     } else { this.lastnameErrorMessage = ''}
     } 
   }
 
@@ -127,13 +153,12 @@ export class RegisterPage {
     } 
   }
 
-  countryLengthCheck() {
-    this.firstLoadCountry = false;
-    if (this.country != '') {
-      this.countryLength = this.country.length;
-    } 
-  }
-
+ isValidText(text): string {
+   if (this.regEx.test(text) || text == '') {
+      return '' } else
+       { return ('Illegal character entered') };
+ }
+ 
  async checkIfUserExistsOnDB() {
      try {
       const Response = await this.RegisterService.getData(this.username);
