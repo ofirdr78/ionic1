@@ -60,7 +60,7 @@
     [(ngModel)]="firstName" name="firstName" (input)="firstNameLengthCheck()"></ion-input>
   </ion-item>
  
-  <div *ngIf="firstNameLength < 6 && !firstLoadFirstName" class="error">
+  <div *ngIf="firstNameLength < 3 && !firstLoadFirstName" class="error">
      First name is too short
     </div>
 
@@ -70,7 +70,7 @@
     [(ngModel)]="lastName" name="lastName" (input)="lastNameLengthCheck()"></ion-input>
   </ion-item>
 
-  <div *ngIf="lastNameLength < 6 && !firstLoadLastName" class="error">
+  <div *ngIf="lastNameLength < 3 && !firstLoadLastName" class="error">
      Last name is too short
     </div>
 
