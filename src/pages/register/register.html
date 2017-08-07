@@ -10,88 +10,100 @@
 <form (ngSubmit)="addUser()" class="form">
   <ion-item>
     <ion-label color="primary" stacked>Username</ion-label>
-    <ion-input required minlength="6" maxlength="24" class="inputField" required placeholder="Please enter username"
-     [(ngModel)]="username" name="username" (input)="userLength()"></ion-input>
+    <ion-input required minlength="6" maxlength="24" class="inputField" placeholder="Please enter username"
+     [(ngModel)]="user.username" name="username" #username="ngModel" (input)="checkIfUserExistsOnDB()" ></ion-input>
   </ion-item>
   
-  <div class="error">
-     {{ usernameErrorMessage }}
-    </div>
+  <div [hidden]="username.valid || username.pristine || illegalCharacterErrorMessage !== ''"
+      class="error">
+    Username is too short
+  </div>
 
- <div *ngIf="usernameAlreadyExists" class="error">
+   <div [hidden]="!usernameAlreadyExists" class="error">
      <img src="/assets/redX.svg" class="redX"/>
      Username Already exists!
     </div>
 
+   <div class="error">
+     {{ illegalCharacterErrorMessage }}
+    </div> 
+
     <ion-item>
     <ion-label color="primary"stacked>Password</ion-label>
     <ion-input class="inputField" required minlength="6" maxlength="24" type="password" placeholder="Please enter password" 
-    [(ngModel)]="password" name="password" (input)="passLength()"></ion-input>
+    [(ngModel)]="user.password" name="password" #password="ngModel" (input)="checkMatchpasswords()" ></ion-input>
   </ion-item>
  
-  <div class="error">
-      {{ passwordErrorMessage }}
-    </div>
+  <div [hidden]="password.valid || password.pristine"
+      class="error">
+    Password is too short
+  </div>
 
     <ion-item>
     <ion-label color="primary" stacked>Repeat Password</ion-label>
     <ion-input class="inputField" required minlength="6" maxlength="24" type="password" placeholder="Please enter password again" 
-    [(ngModel)]="passwordRep" name="passwordRep" (input)="passRepLength()"></ion-input>
+    [(ngModel)]="user.confirm" name="confirm" #confirm="ngModel" (input)="checkMatchpasswords()"></ion-input>
   </ion-item>
  
-  <div *ngIf="repPassIsDifferent && !firstLoadPasswordRep" class="error">
-     <img src="/assets/redX.svg" class="redX"/>
-     Passwords don't match!
-    </div>
+   <div [hidden]="matchPasswords || confirm.pristine"
+      class="error">
+    Passwords don't match!
+  </div>
 
-    <ion-item>
+  <ion-item>
     <ion-label color="primary" stacked>Birth Date</ion-label>
-    <ion-input class="inputField" required minlength="6" maxlength="24" type="date" displayFormat="YYYY/M/D" placeholder="Please enter your birthdate" 
-    [(ngModel)]="birthdate" name="birthdate" (input)="birthdateCheck()"></ion-input>
+    <ion-input class="inputField" required type="date" displayFormat="YYYY/M/D" placeholder="Please enter your birthdate" 
+    [(ngModel)]="user.birthdate" name="birthdate" #birthdate="ngModel" (input)="birthdateCheck()"></ion-input>
   </ion-item>
  
-  <div *ngIf="!validDate && !firstLoadBirthdate" class="error">
-     Birthdate must be before today!
-    </div>
+   <div [hidden]="dateValid || birthdate.pristine"
+      class="error">
+    Birthdate must be before today!
+  </div>
 
-    <ion-item>
+  <ion-item>
     <ion-label color="primary" stacked>First Name</ion-label>
     <ion-input class="inputField" required minlength="3" maxlength="24" type="text" placeholder="Please enter your first name" 
-    [(ngModel)]="firstName" name="firstName" (input)="firstNameLengthCheck()"></ion-input>
+    [(ngModel)]="user.firstName" name="firstName" #firstName="ngModel"></ion-input>
   </ion-item>
- 
-  <div class="error">
-       {{ firstnameErrorMessage }}
-    </div>
 
-    <ion-item>
+  <div [hidden]="firstName.valid || firstName.pristine"
+      class="error">
+    First Name is too short
+  </div>
+
+<ion-item>
     <ion-label color="primary" stacked>Last Name</ion-label>
-    <ion-input class="inputField" required minlength="3" maxlength="24" type="text" placeholder="Please enter your last name" 
-    [(ngModel)]="lastName" name="lastName" (input)="lastNameLengthCheck()"></ion-input>
+    <ion-input class="inputField" required minlength="3" maxlength="24" type="text" placeholder="Please enter your first name" 
+    [(ngModel)]="user.lastName" name="lastName" #lastName="ngModel"></ion-input>
   </ion-item>
 
-   <div class="error">
-       {{ lastnameErrorMessage }}
-    </div>
+  <div [hidden]="lastName.valid || lastName.pristine"
+      class="error">
+    Last Name is too short
+  </div>
 
   <ion-item>
     <ion-label color="primary" stacked>City</ion-label>
-    <ion-input class="inputField" required minlength="3" maxlength="24" type="text" placeholder="Please enter city" 
-    [(ngModel)]="city" name="city" (input)="cityLengthCheck()" ></ion-input>
+    <ion-input class="inputField" required minlength="3" maxlength="24" type="text" placeholder="Please enter your first name" 
+    [(ngModel)]="user.city" name="city" #city="ngModel"></ion-input>
   </ion-item>
- 
-  <div *ngIf="cityLength < 3 && !firstLoadCity" class="error">
-     City is too short
-    </div>
+
+  <div [hidden]="city.valid || city.pristine"
+      class="error">
+    City is too short
+  </div>
 
   <ion-item>
   <ion-label color="primary" stacked>Country</ion-label>
-  <ion-select [(ngModel)]="country" name="country" required>
+  <ion-select [(ngModel)]="user.country" name="country" required>
     <ion-option value="israel" >Israel</ion-option>
+    <ion-option value="Italy" >Italy</ion-option>
+    <ion-option value="France" >France</ion-option>
   </ion-select>
-</ion-item> 
+</ion-item>
 
- <button ion-button block type="submit" [disabled]="isInvalid()">Submit</button>
+ <button ion-button block type="submit" [disabled]="!isValid()">Submit</button>
    </form>
 
 </ion-content>
