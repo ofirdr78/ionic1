@@ -80,7 +80,7 @@ export class RegisterPage {
  }
 
  birthdateCheck() {
-    this.parsedToday = ('0' + (this.today.getMonth()+1)).slice(-2) + '-' + ('0' + this.today.getDate()).slice(-2);
+    this.parsedToday = ('0' + (this.today.getMonth()+ 1)).slice(-2) + '-' + ('0' + this.today.getDate()).slice(-2);
     this.parsedToday = this.today.getFullYear() + '-' + this.parsedToday;                  
     if (this.parsedToday > this.user.birthdate) {
       this.dateValid = true;
@@ -92,7 +92,6 @@ export class RegisterPage {
  async checkIfUserExistsOnDB() {
      this.isValidText(this.user.username);
      if (this.user.username.length >= 6) {
-
      try {
       const Response = await this.RegisterService.getData(this.user.username);
       this.res = Response.json();
@@ -100,13 +99,15 @@ export class RegisterPage {
          this.usernameAlreadyExists = false;
        } else {
          this. usernameAlreadyExists = true;
-       }
+       } 
       
       // console.log(`AppComponent::get:: got response: ${Response}`);
 
     } catch (ex) {
       console.error(`AppComponent::get:: errored with: ${ex}`);
       }
+    } else {
+      this.usernameAlreadyExists = false;
     }
  }
 

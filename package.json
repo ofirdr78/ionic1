@@ -30,6 +30,7 @@
     "regex": "^0.1.1",
     "rxjs": "5.4.0",
     "sw-toolbox": "3.6.0",
+    "tslint": "^5.5.0",
     "zone.js": "0.8.12"
   },
   "devDependencies": {
@@ -37,7 +38,7 @@
     "@ionic/cli-plugin-cordova": "1.6.2",
     "@ionic/cli-plugin-ionic-angular": "1.4.1",
     "ionic": "3.7.0",
-    "typescript": "2.3.4"
+    "typescript": "^2.3.4"
   },
   "description": "An Ionic project"
 }
