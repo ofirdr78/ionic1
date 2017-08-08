@@ -18,8 +18,8 @@ export class RegisterPage {
     password: ['', [Validators.required, Validators.minLength(6)]],
     confirm: ['', [Validators.required, Validators.minLength(6)]],
     birthdate: ['', [Validators.required, this.birthdateValid]],
-    firstName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]],
-    lastName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]],
+    firstname: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]],
+    lastname: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]],
     city: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]],
     country: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]]
   });

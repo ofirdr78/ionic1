@@ -19,7 +19,7 @@ export class HomeService {
   }
 
   async getData(user, pass): Promise<any> {
-    let url = `http://localhost:3000/api/${user}/${pass}`;
+    let url = `http://localhost:3000/api/users/${user}/${pass}`;
     return this.http.get(url).toPromise();
 
   }
