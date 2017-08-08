@@ -7,16 +7,20 @@
 <ion-content padding class="pane">
   <h2>New User Registration</h2>
 
-<form (ngSubmit)="addUser()" class="form">
+<form [formGroup]="loginForm" novalidate (ngSubmit)="addUser()" class="form">
   <ion-item>
     <ion-label color="primary" stacked>Username</ion-label>
-    <ion-input required minlength="6" maxlength="24" class="inputField" placeholder="Please enter username"
-     [(ngModel)]="user.username" name="username" #username="ngModel" (input)="checkIfUserExistsOnDB()" ></ion-input>
+    <ion-input formControlName="username" class="inputField" placeholder="Please enter username" (input)="checkIfUserExistsOnDB()" ></ion-input>
   </ion-item>
   
-  <div [hidden]="username.valid || username.pristine || illegalCharacterErrorMessage !== ''"
+  <div [hidden]="!loginForm.controls.username.hasError('minlength') || loginForm.controls.username.pristine"
       class="error">
-    Username is too short
+    Username should contain at least 6 characters!
+  </div>
+
+    <div [hidden]="!loginForm.controls.username.hasError('pattern') || loginForm.controls.username.pristine"
+      class="error">
+    Username contains illegal characters!
   </div>
 
    <div [hidden]="!usernameAlreadyExists" class="error">
@@ -24,86 +28,86 @@
      Username Already exists!
     </div>
 
-   <div class="error">
-     {{ illegalCharacterErrorMessage }}
-    </div> 
-
     <ion-item>
     <ion-label color="primary"stacked>Password</ion-label>
-    <ion-input class="inputField" required minlength="6" maxlength="24" type="password" placeholder="Please enter password" 
-    [(ngModel)]="user.password" name="password" #password="ngModel" (input)="checkMatchpasswords()" ></ion-input>
+    <ion-input formControlName="password" class="inputField" type="password" placeholder="Please enter password"  (input)="checkMatchpasswords()" ></ion-input>
   </ion-item>
  
-  <div [hidden]="password.valid || password.pristine"
+  <div [hidden]="loginForm.controls.password.valid || loginForm.controls.password.pristine"
       class="error">
-    Password is too short
+    Password should contain at least 6 characters!
   </div>
 
     <ion-item>
     <ion-label color="primary" stacked>Repeat Password</ion-label>
-    <ion-input class="inputField" required minlength="6" maxlength="24" type="password" placeholder="Please enter password again" 
-    [(ngModel)]="user.confirm" name="confirm" #confirm="ngModel" (input)="checkMatchpasswords()"></ion-input>
+    <ion-input formControlName="confirm" class="inputField" type="password" placeholder="Please enter password again" (input)="checkMatchpasswords()"></ion-input>
   </ion-item>
  
-   <div [hidden]="matchPasswords || confirm.pristine"
+   <div [hidden]="matchPasswords || loginForm.controls.confirm.pristine"
       class="error">
     Passwords don't match!
   </div>
 
   <ion-item>
     <ion-label color="primary" stacked>Birth Date</ion-label>
-    <ion-input class="inputField" required type="date" displayFormat="YYYY/M/D" placeholder="Please enter your birthdate" 
-    [(ngModel)]="user.birthdate" name="birthdate" #birthdate="ngModel" (input)="birthdateCheck()"></ion-input>
+    <ion-input formControlName="birthdate" class="inputField" type="date" placeholder="Please enter your birthdate"></ion-input>
   </ion-item>
  
-   <div [hidden]="dateValid || birthdate.pristine"
+   <div [hidden]="!loginForm.controls.birthdate.hasError('dateValid') || loginForm.controls.birthdate.pristine"
       class="error">
     Birthdate must be before today!
   </div>
 
   <ion-item>
     <ion-label color="primary" stacked>First Name</ion-label>
-    <ion-input class="inputField" required minlength="3" maxlength="24" type="text" placeholder="Please enter your first name" 
-    [(ngModel)]="user.firstName" name="firstName" #firstName="ngModel"></ion-input>
+    <ion-input formControlName="firstName" class="inputField" type="text" placeholder="Please enter your first name" ></ion-input>
   </ion-item>
 
-  <div [hidden]="firstName.valid || firstName.pristine"
+  <div [hidden]="!loginForm.controls.firstName.hasError('minlength') || loginForm.controls.firstName.pristine"
       class="error">
-    First Name is too short
+    First Name should contain at least 3 characters!
+  </div>
+
+     <div [hidden]="!loginForm.controls.firstName.hasError('pattern') || loginForm.controls.firstName.pristine"
+      class="error">
+    First name contains illegal characters!
   </div>
 
 <ion-item>
     <ion-label color="primary" stacked>Last Name</ion-label>
-    <ion-input class="inputField" required minlength="3" maxlength="24" type="text" placeholder="Please enter your first name" 
-    [(ngModel)]="user.lastName" name="lastName" #lastName="ngModel"></ion-input>
+    <ion-input formControlName="lastName" class="inputField" type="text" placeholder="Please enter your first name"></ion-input>
   </ion-item>
 
-  <div [hidden]="lastName.valid || lastName.pristine"
+  <div [hidden]="!loginForm.controls.lastName.hasError('minlength') || loginForm.controls.lastName.pristine"
       class="error">
-    Last Name is too short
+    Last Name should contain at least 3 characters!
+  </div>
+
+  <div [hidden]="!loginForm.controls.lastName.hasError('pattern') || loginForm.controls.lastName.pristine"
+      class="error">
+    Last name contains illegal characters!
   </div>
 
   <ion-item>
     <ion-label color="primary" stacked>City</ion-label>
-    <ion-input class="inputField" required minlength="3" maxlength="24" type="text" placeholder="Please enter your first name" 
-    [(ngModel)]="user.city" name="city" #city="ngModel"></ion-input>
+    <ion-input formControlName="city" class="inputField" type="text" placeholder="Please enter your first name" ></ion-input>
   </ion-item>
 
-  <div [hidden]="city.valid || city.pristine"
+  <div [hidden]="loginForm.controls.city.valid || loginForm.controls.city.pristine"
       class="error">
-    City is too short
+    City should contain at least 3 characters!
   </div>
 
   <ion-item>
   <ion-label color="primary" stacked>Country</ion-label>
-  <ion-select [(ngModel)]="user.country" name="country" required>
+  <ion-select formControlName="country">
     <ion-option value="israel" >Israel</ion-option>
     <ion-option value="Italy" >Italy</ion-option>
     <ion-option value="France" >France</ion-option>
   </ion-select>
 </ion-item>
 
- <button ion-button block type="submit" [disabled]="!isValid()">Submit</button>
+ <button ion-button block type="submit" [disabled]="!loginForm.valid">Submit</button>
    </form>
 
 </ion-content>

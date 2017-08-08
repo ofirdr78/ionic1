@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { RegisterService } from './register.service';
 import { HomePage } from '../home/home';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 
 @Component({
@@ -10,90 +11,54 @@ import { HomePage } from '../home/home';
 })
 export class RegisterPage {
   HomePage: HomePage;
-  
-  user: { username: string;
-          password: string;
-          confirm: string;
-          birthdate: string;
-          firstName: string;
-          lastName: string;
-          city: string;
-          country: string; 
-        }
+  RegEx = /^[0-9a-zA-Z]+$/;
+  noDigitsRegEx = /^[a-zA-Z ]+$/;
+  public loginForm = this.fb.group({
+          username: ['', [Validators.required, Validators.pattern(this.RegEx), Validators.minLength(6)]],
+          password: ['', [Validators.required, Validators.minLength(6)]],
+          confirm: ['', [Validators.required, Validators.minLength(6)]],
+          birthdate: ['', [Validators.required, this.birthdateValid]],
+          firstName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]],
+          lastName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]],
+          city: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]],
+          country: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]] 
+        });
   
  usernameAlreadyExists: boolean;
  matchPasswords: boolean;
- dateValid: boolean;
- today: any;
- parsedToday: string;
  res: any;
- regEx = new RegExp(/^[0-9a-zA-Z ]+$/);
- illegalCharacterErrorMessage: string;
 
-  constructor(public navCtrl: NavController, private RegisterService: RegisterService) {
+  constructor(public navCtrl: NavController, private RegisterService: RegisterService, public fb: FormBuilder) {
               this.usernameAlreadyExists = false;
-              this.dateValid = false;
               this.matchPasswords = true;
-              this.illegalCharacterErrorMessage = '';
-              this.today = new Date();
-              this.user = { username: '',
-                            password: '',
-                            confirm: '',
-                            birthdate: '',
-                            firstName: '',
-                            lastName: '',
-                            city: '',
-                            country: ''}
+              
   }
  
- isValid() {
-      if ( 
-        this.user.username !=='' &&
-        this.user.password !=='' && 
-        this.user.birthdate !=='' && 
-        this.user.firstName !=='' && 
-        this.user.lastName !=='' &&
-        this.user.city !=='' && 
-        this.user.country !==''
-      ) {
-          console.log('form valid');
-        return true;
-      
-      } else 
-      {   console.log('form invalid');
-        return false }
-  
-  }
-
- isValidText(text) {
-   if (this.regEx.test(text) || text == '') {
-      this.illegalCharacterErrorMessage = '' } else
-       { this.illegalCharacterErrorMessage = 'Illegal character entered'; };
- }
  
- checkMatchpasswords() {
-   if (this.user.password !== this.user.confirm) {
-     this.matchPasswords = false;
-   } else {
-     this.matchPasswords = true;
-   }
- }
-
- birthdateCheck() {
-    this.parsedToday = ('0' + (this.today.getMonth()+ 1)).slice(-2) + '-' + ('0' + this.today.getDate()).slice(-2);
-    this.parsedToday = this.today.getFullYear() + '-' + this.parsedToday;                  
-    if (this.parsedToday > this.user.birthdate) {
-      this.dateValid = true;
+ birthdateValid(c: FormControl) {
+    let today = new Date();
+    let parsedToday = ('0' + (today.getMonth()+ 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+    parsedToday = today.getFullYear() + '-' + parsedToday;   
+    if (c.value < parsedToday) {
+      return null
     } else {
-      this.dateValid = false;
+      return { dateValid: true }
     }
  }
 
+ checkMatchpasswords() {
+   if (this.loginForm.controls.password.value === this.loginForm.controls.confirm.value) {
+     this.matchPasswords = true;
+   } else {
+     this.matchPasswords = false;
+   }
+
+ }
  async checkIfUserExistsOnDB() {
-     this.isValidText(this.user.username);
-     if (this.user.username.length >= 6) {
+   
+     if (this.loginForm.controls.username.valid) {
      try {
-      const Response = await this.RegisterService.getData(this.user.username);
+      const Response = await this.RegisterService.getData(this.loginForm.controls.username.value);
       this.res = Response.json();
        if (this.res[0] == undefined) {
          this.usernameAlreadyExists = false;
@@ -113,8 +78,9 @@ export class RegisterPage {
 
   async addUser() {
     try {
-        const Response = await this.RegisterService.addUser(this.user.username, this.user.password, this.user.birthdate, this.user.firstName, 
-        this.user.lastName, this.user.city, this.user.country);
+        const Response = await this.RegisterService.addUser(this.loginForm.controls.username.value, this.loginForm.controls.password.value, 
+        this.loginForm.controls.birthdate.value, this.loginForm.controls.firstName.value, this.loginForm.controls.lastName.value , 
+        this.loginForm.controls.city.value, this.loginForm.controls.country.value);
         this.res = Response.json();
         this.navCtrl.push(HomePage);
         // console.log(`AppComponent::get:: got response: ${Response}`);
@@ -123,3 +89,5 @@ export class RegisterPage {
       }
     }
 }
+
+
