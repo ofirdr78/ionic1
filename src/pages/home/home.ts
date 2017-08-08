@@ -36,14 +36,14 @@ export class HomePage {
       const Response = await this.HomeService.getData(this.username, this.password);
       this.res = Response.json();
       this.resp = this.res;
-      if (this.res != '') {
+      if (this.res !== '') {
         this.id = this.res[0].id;
         this.firstname = this.res[0].firstname;
-       this.lastname = this.res[0].lastname
-       this.errormessage = '';
+        this.lastname = this.res[0].lastname;
+        this.errormessage = '';
       } else
       {
-        this.errormessage = "Wrong username or password. Please retry."
+        this.errormessage = 'Wrong username or password. Please retry.';
         this.id = '';
         this.firstname = '';
         this.lastname = '';
@@ -60,7 +60,7 @@ export class HomePage {
       if ( this.usernameLength < 6 || this.passwordLength < 6) {
         return true;
       } else 
-      { return false }
+      { return false; }
   }
  
   userLength() {
@@ -68,7 +68,7 @@ export class HomePage {
     this.lastname = '';
     this.errormessage = '';
     this.firstLoadUsername = false;
-    if (this.username != '') {
+    if (this.username !== '') {
       this.usernameLength = this.username.length;
     } 
   }
@@ -78,7 +78,7 @@ export class HomePage {
     this.lastname = '';
     this.errormessage = '';
     this.firstLoadPassword = false;
-    if (this.password != '') {
+    if (this.password !== '') {
       this.passwordLength = this.password.length;
     }
   }
@@ -86,8 +86,5 @@ export class HomePage {
   pushPage() {
       this.navCtrl.push(RegisterPage);
     }
-
-
-
 
 }

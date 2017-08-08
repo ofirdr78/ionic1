@@ -4,7 +4,6 @@ import { RegisterService } from './register.service';
 import { HomePage } from '../home/home';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
-
 @Component({
   selector: 'page-register',
   templateUrl: 'register.html'
@@ -13,7 +12,7 @@ export class RegisterPage {
   HomePage: HomePage;
   RegEx = /^[0-9a-zA-Z]+$/;
   noDigitsRegEx = /^[a-zA-Z ]+$/;
-  public loginForm = this.fb.group({
+  loginForm = this.fb.group({
     username: ['', [Validators.required, Validators.pattern(this.RegEx), Validators.minLength(6)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     confirm: ['', [Validators.required, Validators.minLength(6)]],
@@ -35,11 +34,11 @@ export class RegisterPage {
   }
 
   birthdateValid(c: FormControl) {
-    let today = new Date();
+    const today = new Date();
     let parsedToday = ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
     parsedToday = today.getFullYear() + '-' + parsedToday;
     if (c.value < parsedToday) {
-      return null
+      return null;
     } else {
       return {dateValid: true}
     }
@@ -80,5 +79,3 @@ export class RegisterPage {
     }
   }
 }
-
-
