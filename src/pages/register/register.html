@@ -12,13 +12,13 @@
     <ion-label color="primary" stacked>Username</ion-label>
     <ion-input formControlName="username" class="inputField" placeholder="Please enter username" (input)="checkIfUserExistsOnDB()" ></ion-input>
   </ion-item>
-  
-  <div [hidden]="!loginForm.controls.username.hasError('minlength') || loginForm.controls.username.pristine"
+
+  <div [hidden]="!loginForm.get('username').hasError('minlength') || loginForm.controls.username.pristine"
       class="error">
     Username should contain at least 6 characters!
   </div>
 
-    <div [hidden]="!loginForm.controls.username.hasError('pattern') || loginForm.controls.username.pristine"
+    <div [hidden]="!loginForm.get('username').hasError('pattern') || loginForm.controls.username.pristine"
       class="error">
     Username contains illegal characters!
   </div>
@@ -32,7 +32,7 @@
     <ion-label color="primary"stacked>Password</ion-label>
     <ion-input formControlName="password" class="inputField" type="password" placeholder="Please enter password"  (input)="checkMatchpasswords()" ></ion-input>
   </ion-item>
- 
+
   <div [hidden]="loginForm.controls.password.valid || loginForm.controls.password.pristine"
       class="error">
     Password should contain at least 6 characters!
@@ -42,7 +42,7 @@
     <ion-label color="primary" stacked>Repeat Password</ion-label>
     <ion-input formControlName="confirm" class="inputField" type="password" placeholder="Please enter password again" (input)="checkMatchpasswords()"></ion-input>
   </ion-item>
- 
+
    <div [hidden]="matchPasswords || loginForm.controls.confirm.pristine"
       class="error">
     Passwords don't match!
@@ -52,7 +52,7 @@
     <ion-label color="primary" stacked>Birth Date</ion-label>
     <ion-input formControlName="birthdate" class="inputField" type="date" placeholder="Please enter your birthdate"></ion-input>
   </ion-item>
- 
+
    <div [hidden]="!loginForm.controls.birthdate.hasError('dateValid') || loginForm.controls.birthdate.pristine"
       class="error">
     Birthdate must be before today!

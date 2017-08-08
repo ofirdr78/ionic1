@@ -14,80 +14,71 @@ export class RegisterPage {
   RegEx = /^[0-9a-zA-Z]+$/;
   noDigitsRegEx = /^[a-zA-Z ]+$/;
   public loginForm = this.fb.group({
-          username: ['', [Validators.required, Validators.pattern(this.RegEx), Validators.minLength(6)]],
-          password: ['', [Validators.required, Validators.minLength(6)]],
-          confirm: ['', [Validators.required, Validators.minLength(6)]],
-          birthdate: ['', [Validators.required, this.birthdateValid]],
-          firstName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]],
-          lastName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]],
-          city: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]],
-          country: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]] 
-        });
-  
- usernameAlreadyExists: boolean;
- matchPasswords: boolean;
- res: any;
+    username: ['', [Validators.required, Validators.pattern(this.RegEx), Validators.minLength(6)]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    confirm: ['', [Validators.required, Validators.minLength(6)]],
+    birthdate: ['', [Validators.required, this.birthdateValid]],
+    firstName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]],
+    lastName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]],
+    city: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]],
+    country: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.noDigitsRegEx)]]
+  });
+
+  usernameAlreadyExists: boolean;
+  matchPasswords: boolean;
+  res: any;
 
   constructor(public navCtrl: NavController, private RegisterService: RegisterService, public fb: FormBuilder) {
-              this.usernameAlreadyExists = false;
-              this.matchPasswords = true;
-              
+    this.usernameAlreadyExists = false;
+    this.matchPasswords = true;
+
   }
- 
- 
- birthdateValid(c: FormControl) {
+
+  birthdateValid(c: FormControl) {
     let today = new Date();
-    let parsedToday = ('0' + (today.getMonth()+ 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
-    parsedToday = today.getFullYear() + '-' + parsedToday;   
+    let parsedToday = ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+    parsedToday = today.getFullYear() + '-' + parsedToday;
     if (c.value < parsedToday) {
       return null
     } else {
-      return { dateValid: true }
+      return {dateValid: true}
     }
- }
+  }
 
- checkMatchpasswords() {
-   if (this.loginForm.controls.password.value === this.loginForm.controls.confirm.value) {
-     this.matchPasswords = true;
-   } else {
-     this.matchPasswords = false;
-   }
+  checkMatchpasswords() {
+    this.matchPasswords = this.loginForm.controls.password.value === this.loginForm.controls.confirm.value;
+  }
 
- }
- async checkIfUserExistsOnDB() {
-   
-     if (this.loginForm.controls.username.valid) {
-     try {
-      const Response = await this.RegisterService.getData(this.loginForm.controls.username.value);
-      this.res = Response.json();
-       if (this.res[0] == undefined) {
-         this.usernameAlreadyExists = false;
-       } else {
-         this. usernameAlreadyExists = true;
-       } 
-      
-      // console.log(`AppComponent::get:: got response: ${Response}`);
+  async checkIfUserExistsOnDB() {
+    if (!this.loginForm.controls.username.valid) {
+      this.usernameAlreadyExists = false;
+      return;
+    }
+
+    try {
+      await this.RegisterService.getUserById(this.loginForm.controls.username.value);
+      this.usernameAlreadyExists = true;
 
     } catch (ex) {
-      console.error(`AppComponent::get:: errored with: ${ex}`);
+      if (ex.status === 404) {
+        this.usernameAlreadyExists = false;
+        return;
       }
-    } else {
-      this.usernameAlreadyExists = false;
+
+      console.error(`AppComponent::get:: errored with: ${ex}`);
     }
- }
+  }
 
   async addUser() {
     try {
-        const Response = await this.RegisterService.addUser(this.loginForm.controls.username.value, this.loginForm.controls.password.value, 
-        this.loginForm.controls.birthdate.value, this.loginForm.controls.firstName.value, this.loginForm.controls.lastName.value , 
-        this.loginForm.controls.city.value, this.loginForm.controls.country.value);
-        this.res = Response.json();
-        this.navCtrl.push(HomePage);
-        // console.log(`AppComponent::get:: got response: ${Response}`);
-      } catch (ex) {
-        console.error(`AppComponent::get:: errored with: ${ex}`);
-      }
+      const Response = await this.RegisterService.addUser(this.loginForm.getRawValue());
+      this.res = Response.json();
+      this.navCtrl.push(HomePage);
+      // console.log(`AppComponent::get:: got response: ${Response}`);
+    } catch (ex) {
+      console.error(`AppComponent::get:: errored with: ${ex}`);
     }
+  }
 }
 
 
