@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { HomeService } from './home.service';
 import { RegisterPage } from '../register/register';
-
+import { PreferencesPage } from '../preferences/preferences';
 
 @Component({
   selector: 'page-home',
@@ -10,6 +10,7 @@ import { RegisterPage } from '../register/register';
 })
 export class HomePage {
   registerPage: RegisterPage;
+  PreferencesPage: PreferencesPage;
   username: string;
   password: string;
   res: any;
@@ -37,10 +38,7 @@ export class HomePage {
       this.res = Response.json();
       this.resp = this.res;
       if (this.res !== '') {
-        this.id = this.res[0].id;
-        this.firstname = this.res[0].firstname;
-        this.lastname = this.res[0].lastname;
-        this.errormessage = '';
+        this.navCtrl.push(PreferencesPage, this.res);
       } else
       {
         this.errormessage = 'Wrong username or password. Please retry.';

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { RegisterService } from './register.service';
 import { HomePage } from '../home/home';
+import { PreferencesPage} from '../preferences/preferences';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 @Component({
@@ -10,6 +11,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 })
 export class RegisterPage {
   HomePage: HomePage;
+  PreferencesPage: PreferencesPage;
   RegEx = /^[0-9a-zA-Z]+$/;
   noDigitsRegEx = /^[a-zA-Z ]+$/;
   loginForm = this.fb.group({
@@ -72,7 +74,7 @@ export class RegisterPage {
     try {
       const Response = await this.RegisterService.addUser(this.loginForm.getRawValue());
       this.res = Response.json();
-      this.navCtrl.push(HomePage);
+      this.navCtrl.push(PreferencesPage);
       // console.log(`AppComponent::get:: got response: ${Response}`);
     } catch (ex) {
       console.error(`AppComponent::get:: errored with: ${ex}`);

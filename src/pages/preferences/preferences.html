@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-navbar>
+      <ion-title>Preferences</ion-title>
+    </ion-navbar>
+  </ion-header>
+  <ion-content class="moviegenre">
+<h2 align="middle"> Please choose the movie genres you like... </h2>
+<div *ngFor="let genre of movieGenres, let i of index" class="label_wrapper">
+    <ion-item>
+    <ion-label class="label"> {{ genre.genre }} </ion-label>
+    <ion-toggle checked="false"></ion-toggle>
+</ion-item>
+ </div>   
+<ion-footer align="center">
+ <button ion-button color="primary" large>Movies</button>
+
+ <button ion-button color="primary" large>Music</button>
+
+ <button ion-button color="primary" large>Books</button>
+
+</ion-footer>
+</ion-content>
