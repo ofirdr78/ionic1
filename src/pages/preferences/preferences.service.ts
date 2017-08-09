@@ -16,4 +16,13 @@ export class PreferencesService {
     return this.http.get(url).toPromise();
   }
 
+  async getBookGenreList(): Promise<any> {
+    const url = `http://localhost:3000/api/bookgenre`;
+    return this.http.get(url).toPromise();
+  }
+
+   async getMusicGenreList(): Promise<any> {
+    const url = `http://localhost:3000/api/musicgenre`;
+    return this.http.get(url).toPromise();
+  }
 }

@@ -2,21 +2,40 @@
     <ion-navbar>
       <ion-title>Preferences</ion-title>
     </ion-navbar>
-  </ion-header>
-  <ion-content class="moviegenre">
-<h2 align="middle"> Please choose the movie genres you like... </h2>
-<div *ngFor="let genre of movieGenres, let i of index" class="label_wrapper">
+  </ion-header>  
+
+
+<ion-content class="{{ tab }}">
+<h2 align="middle"> Please choose the {{ tab }} genres you like </h2>
+<div [hidden]="!moviePicked" *ngFor="let movieGenre of movieGenres, let i of index" class="movie_wrapper">
     <ion-item>
-    <ion-label class="label"> {{ genre.genre }} </ion-label>
+    <ion-label class="label"> {{ movieGenre.genre }} </ion-label>
     <ion-toggle checked="false"></ion-toggle>
-</ion-item>
+    </ion-item>
  </div>   
-<ion-footer align="center">
- <button ion-button color="primary" large>Movies</button>
 
- <button ion-button color="primary" large>Music</button>
+ <div [hidden]="!musicPicked" *ngFor="let musicGenre of musicGenres, let i of index" class="label_wrapper">
+    <ion-item>
+    <ion-label class="label"> {{ musicGenre.genre }} </ion-label>
+    <ion-toggle checked="false"></ion-toggle>
+    </ion-item>
+</div>
 
- <button ion-button color="primary" large>Books</button>
 
-</ion-footer>
+<div [hidden]="!booksPicked" *ngFor="let bookGenre of bookGenres, let i of index" class="label_wrapper">
+    <ion-item>
+    <ion-label class="label"> {{ bookGenre.genre }} </ion-label>
+    <ion-toggle checked="false"></ion-toggle>
+    </ion-item>
+</div>
+
+
+  <ion-footer align="center">
+  <button ion-button color="primary" large (click)="changePreference('movie')">Movies</button>
+
+  <button ion-button color="primary" large (click)="changePreference('music')">Music</button>
+
+  <button ion-button color="primary" large (click)="changePreference('book')">Books</button>
+
+ </ion-footer>
 </ion-content>

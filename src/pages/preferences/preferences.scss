@@ -1,10 +1,22 @@
- .moviegenre {
+ .movie {
         background: url('../assets/movies.jpeg') no-repeat center center fixed; 
         -webkit-background-size: cover;
         -moz-background-size: cover;
-        background-size: cover;
-     
+        background-size: cover; 
     }
+
+.book {
+        background: url('../assets/books.jpeg') no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover; 
+    } 
+.music {
+        background: url('../assets/music.jpeg') no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover; 
+    } 
 .label_wrapper {
     position: relative;
     display: block;
@@ -15,4 +27,15 @@
 h2 {
     color: "primary";
     text-shadow: 3px 3px 3px white;
+}
+
+.movie_wrapper {
+    background: url('../assets/movies.jpeg') fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover; 
+    position: relative;
+    display: block;
+    left: 39%;
+    width: 400px;
 }

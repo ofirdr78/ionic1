@@ -74,7 +74,7 @@ export class RegisterPage {
     try {
       const Response = await this.RegisterService.addUser(this.loginForm.getRawValue());
       this.res = Response.json();
-      this.navCtrl.push(PreferencesPage);
+      this.navCtrl.push(HomePage);
       // console.log(`AppComponent::get:: got response: ${Response}`);
     } catch (ex) {
       console.error(`AppComponent::get:: errored with: ${ex}`);
