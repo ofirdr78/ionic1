@@ -10,7 +10,8 @@ import { PreferencesService } from './preferences.service';
 })
 export class PreferencesPage implements OnInit {
   data: any;
-  movieGenres: any;
+  movieGenresFromDB: any;
+  movieGenresSelects: { username: string, genre: string; id: number; enabled: boolean}[];
   bookGenres: any;
   musicGenres: any;
   moviePicked: boolean;
@@ -24,12 +25,12 @@ export class PreferencesPage implements OnInit {
     this.musicPicked = false;
     this.booksPicked = false;
     this.tab = 'movie';
+    this.movieGenresSelects = [];
 
   } 
 
   ngOnInit()
     {
-
         this.getMovieGenres();
         this.getBookGenres();
         this.getMusicGenres();
@@ -37,6 +38,7 @@ export class PreferencesPage implements OnInit {
 
   changePreference(pref) {
     this.tab = pref;
+    this.saveMovieSelections();
     switch (pref) {
       case 'movie': {
           this.moviePicked = true;
@@ -62,7 +64,10 @@ export class PreferencesPage implements OnInit {
   async getMovieGenres() {   
     try {
       const Response = await this.PreferencesService.getMovieGenreList();
-      this.movieGenres = Response.json(); 
+      this.movieGenresFromDB = Response.json(); 
+      for (const Genre of this.movieGenresFromDB) {
+        this.movieGenresSelects.push({username: this.data.data[0].id, genre: Genre.genre, id: Genre.id, enabled: false});
+      }
     } catch (ex) {
      console.error(`AppComponent::get:: errored with: ${ex}`);
     }
@@ -81,6 +86,14 @@ export class PreferencesPage implements OnInit {
     try {
       const Response = await this.PreferencesService.getMusicGenreList();
       this.musicGenres = Response.json(); 
+    } catch (ex) {
+     console.error(`AppComponent::get:: errored with: ${ex}`);
+    }
+  }
+
+  async saveMovieSelections() {
+   try {
+      const Response = await this.PreferencesService.saveMovieSelections(this.movieGenresSelects);
     } catch (ex) {
      console.error(`AppComponent::get:: errored with: ${ex}`);
     }

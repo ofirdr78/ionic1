@@ -80,4 +80,5 @@ export class RegisterPage {
       console.error(`AppComponent::get:: errored with: ${ex}`);
     }
   }
+  
 }

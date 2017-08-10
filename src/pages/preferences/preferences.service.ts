@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/toPromise';
 
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, HttpModule, Headers, RequestOptions } from '@angular/http';
 
 import 'rxjs/add/operator/map';
 
@@ -25,4 +25,10 @@ export class PreferencesService {
     const url = `http://localhost:3000/api/musicgenre`;
     return this.http.get(url).toPromise();
   }
+
+  async saveMovieSelections(data): Promise<any> {
+    const url = `http://localhost:3000/api/selection/movies`;
+    return this.http.post(url, data).toPromise();
+  }
+
 }

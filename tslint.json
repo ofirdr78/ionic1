@@ -19,6 +19,8 @@
             true,
             "no-public"
         ],
+        "object-literal-shorthand": false,
+        "forin": false,
         "one-line": false,
         "array-type": false,
         "ordered-imports": false,

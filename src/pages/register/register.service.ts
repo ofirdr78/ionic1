@@ -12,7 +12,7 @@ export class RegisterService {
   }
 
   async getUserById(user): Promise<any> {
-    let url = `http://localhost:3000/api/users/${user}/`;
+    const url = `http://localhost:3000/api/users/${user}/`;
     return this.http.get(url).toPromise();
   }
 

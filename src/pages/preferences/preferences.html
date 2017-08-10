@@ -7,10 +7,10 @@
 
 <ion-content class="{{ tab }}">
 <h2 align="middle"> Please choose the {{ tab }} genres you like </h2>
-<div [hidden]="!moviePicked" *ngFor="let movieGenre of movieGenres, let i of index" class="movie_wrapper">
+<div [hidden]="!moviePicked" *ngFor="let selection of movieGenresSelects" class="movie_wrapper">
     <ion-item>
-    <ion-label class="label"> {{ movieGenre.genre }} </ion-label>
-    <ion-toggle checked="false"></ion-toggle>
+    <ion-label class="label"> {{ selection.genre }} </ion-label>
+    <ion-toggle checked="false" [(ngModel)]="selection.enabled"> ></ion-toggle>
     </ion-item>
  </div>   
 
