@@ -38,7 +38,6 @@ export class PreferencesPage implements OnInit {
 
   changePreference(pref) {
     this.tab = pref;
-    this.saveMovieSelections();
     switch (pref) {
       case 'movie': {
           this.moviePicked = true;
@@ -91,11 +90,20 @@ export class PreferencesPage implements OnInit {
     }
   }
 
-  async saveMovieSelections() {
-   try {
-      const Response = await this.PreferencesService.saveMovieSelections(this.movieGenresSelects);
+  async saveButton(selectionID, selectionEnabled) {
+    if (selectionEnabled) { 
+    try {
+      const Response = await this.PreferencesService.saveMovieSelection(this.data.data[0].id, selectionID);
     } catch (ex) {
      console.error(`AppComponent::get:: errored with: ${ex}`);
-    }
+      }
+   } else {
+     try {
+      const Response = await this.PreferencesService.deleteMovieSelection(this.data.data[0].id, selectionID);
+    } catch (ex) {
+     console.error(`AppComponent::get:: errored with: ${ex}`);
+      }
+   } 
   }
+
 }
