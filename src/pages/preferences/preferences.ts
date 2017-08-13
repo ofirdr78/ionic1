@@ -11,7 +11,7 @@ import { PreferencesService } from './preferences.service';
 export class PreferencesPage implements OnInit {
   data: any;
   movieGenresFromDB: any;
-  movieGenresSelects: { username: string, genre: string; id: number; enabled: boolean}[];
+  movieGenresSelects: { genre: string; id: number; enabled: boolean}[];
   bookGenres: any;
   musicGenres: any;
   moviePicked: boolean;
@@ -65,7 +65,7 @@ export class PreferencesPage implements OnInit {
       const Response = await this.PreferencesService.getMovieGenreList();
       this.movieGenresFromDB = Response.json(); 
       for (const Genre of this.movieGenresFromDB) {
-        this.movieGenresSelects.push({username: this.data.data[0].id, genre: Genre.genre, id: Genre.id, enabled: false});
+        this.movieGenresSelects.push({genre: Genre.genre, id: Genre.id, enabled: false});
       }
     } catch (ex) {
      console.error(`AppComponent::get:: errored with: ${ex}`);
@@ -91,19 +91,15 @@ export class PreferencesPage implements OnInit {
   }
 
   async saveButton(selectionID, selectionEnabled) {
-    if (selectionEnabled) { 
-    try {
-      const Response = await this.PreferencesService.saveMovieSelection(this.data.data[0].id, selectionID);
-    } catch (ex) {
-     console.error(`AppComponent::get:: errored with: ${ex}`);
-      }
-   } else {
      try {
-      const Response = await this.PreferencesService.deleteMovieSelection(this.data.data[0].id, selectionID);
+          if (selectionEnabled) { 
+             const Response = await this.PreferencesService.saveMovieSelection(this.data.data[0].id, selectionID);
+             }
+          else {
+             const Response = await this.PreferencesService.deleteMovieSelection(this.data.data[0].id, selectionID);
+               }
     } catch (ex) {
      console.error(`AppComponent::get:: errored with: ${ex}`);
       }
-   } 
   }
-
 }
