@@ -10,7 +10,7 @@
 <div [hidden]="!moviePicked" *ngFor="let selection of movieGenresSelects" class="movie_wrapper">
     <ion-item>
     <ion-label class="label"> {{ selection.genre }} </ion-label>
-    <ion-toggle checked="false" [(ngModel)]="selection.enabled" (click)="saveButton(selection.id, selection.enabled)"> </ion-toggle>
+    <ion-toggle checked="false" [(ngModel)]="selection.enabled" (click)="toggleButton(selection.id, selection.enabled)"> </ion-toggle>
     </ion-item>
  </div>   
 

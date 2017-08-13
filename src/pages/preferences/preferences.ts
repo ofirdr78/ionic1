@@ -90,7 +90,7 @@ export class PreferencesPage implements OnInit {
     }
   }
 
-  async saveButton(selectionID, selectionEnabled) {
+  async toggleButton(selectionID, selectionEnabled) {
      try {
           if (selectionEnabled) { 
              const Response = await this.PreferencesService.saveMovieSelection(this.data.data[0].id, selectionID);
