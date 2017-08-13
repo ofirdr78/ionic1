@@ -4,7 +4,6 @@
     </ion-navbar>
   </ion-header>  
 
-
 <ion-content class="{{ tab }}">
 <h2 align="middle"> Please choose the {{ tab }} genres you like </h2>
 <div [hidden]="!moviePicked" *ngFor="let selection of movieGenresSelects" class="movie_wrapper">
@@ -21,7 +20,6 @@
     </ion-item>
 </div>
 
-
 <div [hidden]="!booksPicked" *ngFor="let bookGenre of bookGenres, let i of index" class="label_wrapper">
     <ion-item>
     <ion-label class="label"> {{ bookGenre.genre }} </ion-label>
@@ -29,13 +27,12 @@
     </ion-item>
 </div>
 
-
   <ion-footer align="center">
   <button ion-button color="primary" large (click)="changePreference('movie')">Movies</button>
 
   <button ion-button color="primary" large (click)="changePreference('music')">Music</button>
 
   <button ion-button color="primary" large (click)="changePreference('book')">Books</button>
-
  </ion-footer>
+
 </ion-content>

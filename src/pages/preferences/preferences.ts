@@ -26,7 +26,6 @@ export class PreferencesPage implements OnInit {
     this.booksPicked = false;
     this.tab = 'movie';
     this.movieGenresSelects = [];
-
   } 
 
   ngOnInit()
@@ -72,7 +71,7 @@ export class PreferencesPage implements OnInit {
     }
   }
 
-   async getBookGenres() {   
+  async getBookGenres() {   
     try {
       const Response = await this.PreferencesService.getBookGenreList();
       this.bookGenres = Response.json(); 
