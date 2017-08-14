@@ -1,40 +1,27 @@
 <ion-header>
-    <ion-navbar>
-      <ion-title>Preferences</ion-title>
-    </ion-navbar>
-  </ion-header>  
+  <ion-navbar>
+    <ion-title>Preferences</ion-title>
+  </ion-navbar>
+</ion-header>
 
-<ion-content class="{{ tab }}">
-<h2 align="middle"> Please choose the {{ tab }} genres you like </h2>
-<div [hidden]="!moviePicked" *ngFor="let movieSelection of movieGenresSelects" class="movies_wrapper">
+<ion-content [class]="currentGenre">
+  <h2 align="middle"> Please choose the {{ currentGenre }} genres you like </h2>
+
+  <div *ngFor="let genre of genres.get(currentGenre)">
     <ion-item>
-    <ion-label class="label"> {{ movieSelection.genre }} </ion-label>
-    <ion-toggle checked="false" [(ngModel)]="movieSelection.enabled" (click)="toggleButton(movieSelection.id, movieSelection.enabled)"> </ion-toggle>
+      <ion-label class="label"> {{ genre.genre }}</ion-label>
+      <ion-toggle checked="false" [(ngModel)]="genre.enabled"
+                  (click)="genreStateChange(genre)"></ion-toggle>
     </ion-item>
- </div>   
-
- <div [hidden]="!musicPicked" *ngFor="let musicSelection of musicGenresSelects" class="music_wrapper">
-    <ion-item>
-    <ion-label class="label"> {{ musicSelection.genre }} </ion-label>
-   <ion-toggle checked="false" [(ngModel)]="musicSelection.enabled" (click)="toggleButton(musicSelection.id, musicSelection.enabled)"> </ion-toggle>
-    </ion-item>
-</div>
-
-<div [hidden]="!booksPicked" *ngFor="let bookSelection of bookGenresSelects" class="books_wrapper">
-    <ion-item>
-    <ion-label class="label"> {{ bookSelection.genre }} </ion-label>
-   <ion-toggle checked="false" [(ngModel)]="bookSelection.enabled" (click)="toggleButton(bookSelection.id, bookSelection.enabled)"> </ion-toggle>
-    </ion-item>
-</div>
-
+  </div>
 </ion-content>
 
 <ion-footer class="footer" align="center">
   <ion-toolbar>
-  <button ion-button color="primary" small (click)="changePreference('movies')">Movies</button>
+    <button ion-button color="primary" small (click)="changePreference('movies')">Movies</button>
 
-  <button ion-button color="primary" small (click)="changePreference('music')">Music</button>
+    <button ion-button color="primary" small (click)="changePreference('music')">Music</button>
 
-  <button ion-button color="primary" small (click)="changePreference('books')">Books</button>
+    <button ion-button color="primary" small (click)="changePreference('books')">Books</button>
   </ion-toolbar>
- </ion-footer>
+</ion-footer>

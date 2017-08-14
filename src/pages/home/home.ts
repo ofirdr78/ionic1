@@ -25,42 +25,43 @@ export class HomePage {
   firstLoadPassword: boolean;
 
   constructor(public navCtrl: NavController, private HomeService: HomeService) {
-     this.usernameLength = 0;
-     this.passwordLength = 0;
-     this.firstLoadUsername = true;
-     this.firstLoadPassword = true;
+    this.usernameLength = 0;
+    this.passwordLength = 0;
+    this.firstLoadUsername = true;
+    this.firstLoadPassword = true;
 
   }
- 
+
   async credentialForm() {
-     try {
+    try {
       const Response = await this.HomeService.getData(this.username, this.password);
       this.res = Response.json();
       this.resp = this.res;
-      if (this.res !== '') {
-        this.navCtrl.push(PreferencesPage, this.res);
-      } else
-      {
+      this.navCtrl.push(PreferencesPage, this.res);
+
+      // console.log(`AppComponent::get:: got response: ${Response}`);
+
+    } catch (ex) {
+      if (ex.status === 404) {
         this.errormessage = 'Wrong username or password. Please retry.';
         this.id = '';
         this.firstname = '';
         this.lastname = '';
+        return;
       }
- 
-      // console.log(`AppComponent::get:: got response: ${Response}`);
 
-    } catch (ex) {
       console.error(`AppComponent::get:: errored with: ${ex}`);
     }
   }
- 
-   isInvalid() {
-      if ( this.usernameLength < 6 || this.passwordLength < 6) {
-        return true;
-      } else 
-      { return false; }
+
+  isInvalid() {
+    if (this.usernameLength < 6 || this.passwordLength < 6) {
+      return true;
+    } else {
+      return false;
+    }
   }
- 
+
   userLength() {
     this.firstname = '';
     this.lastname = '';
@@ -68,10 +69,10 @@ export class HomePage {
     this.firstLoadUsername = false;
     if (this.username !== '') {
       this.usernameLength = this.username.length;
-    } 
+    }
   }
 
-   passLength() {
+  passLength() {
     this.firstname = '';
     this.lastname = '';
     this.errormessage = '';
@@ -82,7 +83,7 @@ export class HomePage {
   }
 
   pushPage() {
-      this.navCtrl.push(RegisterPage);
-    }
+    this.navCtrl.push(RegisterPage);
+  }
 
 }
