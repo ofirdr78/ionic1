@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content padding class="pane">
-  <h2>New User Registration</h2>
+  <h2 align="middle">New User Registration</h2>
 
 <form [formGroup]="loginForm" novalidate (ngSubmit)="addUser()" class="form">
   <ion-item>
@@ -15,7 +15,7 @@
 
   <div [hidden]="!loginForm.get('username').hasError('minlength') || loginForm.get('username').pristine"
       class="error">
-    Username should contain at least 6 characters!
+    Username must be at least 6 characters!
   </div>
 
     <div [hidden]="!loginForm.get('username').hasError('pattern') || loginForm.get('username').pristine"
@@ -35,7 +35,7 @@
 
   <div [hidden]="loginForm.get('password').valid || loginForm.get('password').pristine"
       class="error">
-    Password should contain at least 6 characters!
+    Password must be at least 6 characters!
   </div>
 
     <ion-item>
@@ -65,7 +65,7 @@
 
   <div [hidden]="!loginForm.get('firstname').hasError('minlength') || loginForm.get('firstname').pristine"
       class="error">
-    First Name should contain at least 3 characters!
+    First Name must be at least 3 characters!
   </div>
 
      <div [hidden]="!loginForm.get('firstname').hasError('pattern') || loginForm.get('firstname').pristine"
@@ -80,7 +80,7 @@
 
   <div [hidden]="!loginForm.get('lastname').hasError('minlength') || loginForm.get('lastname').pristine"
       class="error">
-    Last Name should contain at least 3 characters!
+    Last Name must be at least 3 characters!
   </div>
 
   <div [hidden]="!loginForm.get('lastname').hasError('pattern') || loginForm.get('lastname').pristine"
@@ -95,7 +95,7 @@
 
   <div [hidden]="loginForm.get('city').valid || loginForm.get('city').pristine"
       class="error">
-    City should contain at least 3 characters!
+    City should must be least 3 characters!
   </div>
 
   <ion-item>

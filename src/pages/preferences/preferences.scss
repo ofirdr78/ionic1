@@ -1,10 +1,10 @@
- .movie {
+ .movies {
         background: url('../assets/movies.jpeg') no-repeat center center fixed; 
         -webkit-background-size: cover;
         -moz-background-size: cover;
         background-size: cover; 
     }
-.book {
+.books {
         background: url('../assets/books.jpeg') no-repeat center center fixed; 
         -webkit-background-size: cover;
         -moz-background-size: cover;
@@ -16,24 +16,41 @@
         -moz-background-size: cover;
         background-size: cover; 
     } 
-.label_wrapper {
-    position: relative;
-    display: block;
-    left: 39%;
-    width: 400px;
-}
 
 h2 {
     color: "primary";
     text-shadow: 3px 3px 3px white;
 }
-.movie_wrapper {
+.movies_wrapper {
     background: url('../assets/movies.jpeg') fixed; 
         -webkit-background-size: cover;
         -moz-background-size: cover;
         background-size: cover; 
     position: relative;
     display: block;
-    left: 39%;
-    width: 400px;
+    left: 1%;
+    width: 349px;
+}
+.music_wrapper {
+    background: url('../assets/music.jpeg') fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover; 
+    position: relative;
+    display: block;
+    left: 1%;
+    width: 349px;
+}
+.books_wrapper {
+    background: url('../assets/books.jpeg') fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover; 
+    position: relative;
+    display: block;
+    left: 1%;
+    width: 349px;
+}
+.footer {
+    position:absolute;
 }

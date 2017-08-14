@@ -24,13 +24,13 @@ export class PreferencesService {
     return this.http.get(url).toPromise();
   }
 
-  async saveMovieSelection(username, selectionID): Promise<any> {
-    const url = `http://localhost:3000/api/selection/movies`;
+  async saveSelection(username, selectionID, tab): Promise<any> {
+    const url = `http://localhost:3000/api/selection/${tab}`;
     return this.http.post(url, [username, selectionID]).toPromise();
   }
 
-  async deleteMovieSelection(username, selectionID): Promise<any> {
-    const url = `http://localhost:3000/api/selection/movies/${username}/${selectionID}`;
+  async deleteSelection(username, selectionID, tab): Promise<any> {
+    const url = `http://localhost:3000/api/selection/${tab}/${username}/${selectionID}`;
     return this.http.delete(url).toPromise();
   }
 

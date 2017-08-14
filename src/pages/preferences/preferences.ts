@@ -11,7 +11,11 @@ import { PreferencesService } from './preferences.service';
 export class PreferencesPage implements OnInit {
   data: any;
   movieGenresFromDB: any;
+  musicGenresFromDB: any;
+  bookGenresFromDB: any;
   movieGenresSelects: { genre: string; id: number; enabled: boolean}[];
+  musicGenresSelects: { genre: string; id: number; enabled: boolean}[];
+  bookGenresSelects: { genre: string; id: number; enabled: boolean}[];
   bookGenres: any;
   musicGenres: any;
   moviePicked: boolean;
@@ -24,8 +28,10 @@ export class PreferencesPage implements OnInit {
     this.moviePicked = true;
     this.musicPicked = false;
     this.booksPicked = false;
-    this.tab = 'movie';
+    this.tab = 'movies';
     this.movieGenresSelects = [];
+    this.musicGenresSelects = [];
+    this.bookGenresSelects = [];
   } 
 
   ngOnInit()
@@ -38,7 +44,7 @@ export class PreferencesPage implements OnInit {
   changePreference(pref) {
     this.tab = pref;
     switch (pref) {
-      case 'movie': {
+      case 'movies': {
           this.moviePicked = true;
           this.musicPicked = false;
           this.booksPicked = false;
@@ -50,7 +56,7 @@ export class PreferencesPage implements OnInit {
           this.booksPicked = false;
           break; 
       }  
-      case 'book': {
+      case 'books': {
           this.moviePicked = false;
           this.musicPicked = false;
           this.booksPicked = true;
@@ -74,7 +80,10 @@ export class PreferencesPage implements OnInit {
   async getBookGenres() {   
     try {
       const Response = await this.PreferencesService.getBookGenreList();
-      this.bookGenres = Response.json(); 
+      this.bookGenresFromDB = Response.json();
+      for (const Genre of this.bookGenresFromDB) {
+        this.bookGenresSelects.push({genre: Genre.genre, id: Genre.id, enabled: false});
+      }
     } catch (ex) {
      console.error(`AppComponent::get:: errored with: ${ex}`);
     }
@@ -83,7 +92,10 @@ export class PreferencesPage implements OnInit {
   async getMusicGenres() {   
     try {
       const Response = await this.PreferencesService.getMusicGenreList();
-      this.musicGenres = Response.json(); 
+      this.musicGenresFromDB = Response.json(); 
+      for (const Genre of this.musicGenresFromDB) {
+        this.musicGenresSelects.push({genre: Genre.genre, id: Genre.id, enabled: false});
+      }
     } catch (ex) {
      console.error(`AppComponent::get:: errored with: ${ex}`);
     }
@@ -92,10 +104,10 @@ export class PreferencesPage implements OnInit {
   async toggleButton(selectionID, selectionEnabled) {
      try {
           if (selectionEnabled) { 
-             const Response = await this.PreferencesService.saveMovieSelection(this.data.data[0].id, selectionID);
+             const Response = await this.PreferencesService.saveSelection(this.data.data[0].id, selectionID, this.tab);
              }
           else {
-             const Response = await this.PreferencesService.deleteMovieSelection(this.data.data[0].id, selectionID);
+             const Response = await this.PreferencesService.deleteSelection(this.data.data[0].id, selectionID, this.tab);
                }
     } catch (ex) {
      console.error(`AppComponent::get:: errored with: ${ex}`);
