@@ -21,4 +21,9 @@ export class RegisterService {
     const url = `http://localhost:3000/api/newuser/`;
     return this.http.post(url, userFormRaw).toPromise();
   }
+
+  async getData(user, pass): Promise<any> {
+    const url = `http://localhost:3000/api/users/`;
+    return this.http.post(url, {user, pass}).toPromise();
+  }
 }

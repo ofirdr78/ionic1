@@ -29,8 +29,8 @@ export class PreferencesService {
     return this.http.post(url, [username, selectionID]).toPromise();
   }
 
-  async deleteSelection(username, selectionID, tab): Promise<any> {
-    const url = `http://localhost:3000/api/selection/${tab}/${username}/${selectionID}`;
+  async deleteSelection(userID, selectionID, tab): Promise<any> {
+    const url = `http://localhost:3000/api/selection/${tab}/${userID}/${selectionID}`;
     return this.http.delete(url).toPromise();
   }
 

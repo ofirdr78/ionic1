@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { HomeService } from './home.service';
 import { RegisterPage } from '../register/register';
 import { PreferencesPage } from '../preferences/preferences';
+import * as sha512 from 'js-sha512';
 
 @Component({
   selector: 'page-home',
@@ -18,7 +19,6 @@ export class HomePage {
   firstname: string;
   lastname: string;
   errormessage: string;
-  resp: any;
   usernameLength: number;
   passwordLength: number;
   firstLoadUsername: boolean;
@@ -29,16 +29,13 @@ export class HomePage {
     this.passwordLength = 0;
     this.firstLoadUsername = true;
     this.firstLoadPassword = true;
-
   }
 
   async credentialForm() {
     try {
-      const Response = await this.HomeService.getData(this.username, this.password);
+      const Response = await this.HomeService.getData(this.username, sha512(this.password));
       this.res = Response.json();
-      this.resp = this.res;
       this.navCtrl.push(PreferencesPage, this.res);
-
       // console.log(`AppComponent::get:: got response: ${Response}`);
 
     } catch (ex) {
@@ -49,8 +46,17 @@ export class HomePage {
         this.lastname = '';
         return;
       }
-
       console.error(`AppComponent::get:: errored with: ${ex}`);
+
+      try {
+            const Response = await this.HomeService.getUserById(this.username);
+            this.res = Response.json();
+            this.navCtrl.push(PreferencesPage, this.res);
+          }
+          catch (ex) {
+            console.error(`AppComponent::get:: errored with: ${ex}`);
+          }
+
     }
   }
 

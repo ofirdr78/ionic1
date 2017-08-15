@@ -4,6 +4,7 @@ import { RegisterService } from './register.service';
 import { HomePage } from '../home/home';
 import { PreferencesPage} from '../preferences/preferences';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import * as sha512 from 'js-sha512';
 
 @Component({
   selector: 'page-register',
@@ -42,7 +43,7 @@ export class RegisterPage {
     if (c.value < parsedToday) {
       return null;
     } else {
-      return {dateValid: true}
+      return {dateValid: true};
     }
   }
 
@@ -71,12 +72,18 @@ export class RegisterPage {
   }
 
   async addUser() {
+    this.loginForm.controls.password.setValue(sha512(this.loginForm.controls.password.value));
     try {
-      const Response = await this.RegisterService.addUser(this.loginForm.getRawValue());
-      this.res = Response.json();
-      this.navCtrl.push(HomePage);
-      // console.log(`AppComponent::get:: got response: ${Response}`);
+      await this.RegisterService.addUser(this.loginForm.getRawValue());    
     } catch (ex) {
+      console.error(`AppComponent::get:: errored with: ${ex}`);
+    }
+    try {
+      const Response = await this.RegisterService.getData(this.loginForm.controls.username.value, this.loginForm.controls.password.value);
+      this.res = Response.json();
+      this.navCtrl.push(PreferencesPage, this.res);
+    }
+    catch (ex) {
       console.error(`AppComponent::get:: errored with: ${ex}`);
     }
   }

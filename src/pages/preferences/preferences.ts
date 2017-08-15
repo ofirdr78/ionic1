@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams } from 'ionic-angular';
-
+import { I18nPluralPipe } from '@angular/common';
 import { PreferencesService } from './preferences.service';
 
 @Component({
@@ -10,11 +10,14 @@ import { PreferencesService } from './preferences.service';
 export class PreferencesPage implements OnInit {
   genres: Map<string, { id: string, genre: string, enabled: boolean }>;
   currentGenre: string;
+  parsedCurrentGenre: string;
   data: any;
 
   constructor(public navParams: NavParams, public PreferencesService: PreferencesService) {
     this.data = this.navParams;
     this.genres = new Map();
+    this.currentGenre = 'movies';
+    this.parsedCurrentGenre = 'movie';
   }
 
   ngOnInit() {
@@ -23,6 +26,11 @@ export class PreferencesPage implements OnInit {
 
   changePreference(pref) {
     this.currentGenre = pref;
+    this.parsedCurrentGenre = pref;
+    if (pref !== 'music') {
+      this.parsedCurrentGenre = this.parsedCurrentGenre.substring(0, this.parsedCurrentGenre.length - 1);
+    }
+
   }
 
   genreStateChange(genre: { id: string, genre: string, enabled: boolean }) {
@@ -36,21 +44,24 @@ export class PreferencesPage implements OnInit {
       this.PreferencesService.getBookGenreList()
     ];
 
-    // TODO: Add try/catch block
+    try {
     const [movies, music, books] = await Promise.all(actions);
 
     this.genres.set('movies', movies.json());
     this.genres.set('music', music.json());
     this.genres.set('books', books.json());
+    } catch (ex) {
+      console.error(`AppComponent::get:: errored with: ${ex}`);
+    }
   }
 
   async toggleButton(selectionID, selectionEnabled) {
     try {
       if (selectionEnabled) {
-        await this.PreferencesService.saveSelection(this.data.data[0].id, selectionID, this.tab);
+        await this.PreferencesService.saveSelection(this.data.data[0].id, selectionID, this.currentGenre);
       }
       else {
-        await this.PreferencesService.deleteSelection(this.data.data[0].id, selectionID, this.tab);
+        await this.PreferencesService.deleteSelection(this.data.data[0].id, selectionID, this.currentGenre);
       }
     } catch (ex) {
       console.error(`AppComponent::get:: errored with: ${ex}`);

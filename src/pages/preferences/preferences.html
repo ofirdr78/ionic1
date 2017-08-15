@@ -1,11 +1,11 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar hideBackButton="true">
     <ion-title>Preferences</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content [class]="currentGenre">
-  <h2 align="middle"> Please choose the {{ currentGenre }} genres you like </h2>
+  <h2 align="middle"> Please choose the {{ parsedCurrentGenre }} genres you like </h2>
 
   <div *ngFor="let genre of genres.get(currentGenre)">
     <ion-item>

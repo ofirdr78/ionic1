@@ -15,9 +15,13 @@ export class HomeService {
   }
 
   async getData(user, pass): Promise<any> {
-    const url = `http://localhost:3000/api/users/${user}/${pass}`;
-    return this.http.get(url).toPromise();
-
+    const url = `http://localhost:3000/api/users/`;
+    return this.http.post(url, {user, pass}).toPromise();
   }
+
+  async getUserById(user): Promise<any> {
+  const url = `http://localhost:3000/api/users/${user}/`;
+  return this.http.get(url).toPromise();
+}
 
 }
